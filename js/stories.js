@@ -55,6 +55,9 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  // Need some logic in here so that when the user logs in, we know if that story is in the user's favorites array
+  // Need to manipulate the DOM to star that story if it's in the array
+  // Each time we add a star, want to check if the story is in the user's array
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */

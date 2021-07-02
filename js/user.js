@@ -23,6 +23,13 @@ async function login(evt) {
 
   $loginForm.trigger("reset");
 
+  // // outstanding Q: do we need a copy of the loop below here or is the version in checkForRememberedUser enough?
+  
+  // // Marks story to true if user has already added to favorites
+  // for (let story of currentUser.favorites) {
+  //   story.favorite = true;
+  // }
+
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 }
@@ -80,6 +87,13 @@ async function checkForRememberedUser() {
 
   // try to log in with these credentials (will be null if login failed)
   currentUser = await User.loginViaStoredCredentials(token, username);
+
+  // // TODO: we may need to put this in login as well
+
+  // // Marks story to true if user has already added to favorites
+  // for (let story of currentUser.favorites) {
+  //   story.favorite = true;
+  // }
 }
 
 /** Sync current user information to localStorage.

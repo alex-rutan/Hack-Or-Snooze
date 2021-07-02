@@ -19,6 +19,7 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.favorite = false;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -100,7 +101,9 @@ class StoryList {
           createdAt
         }
       );
-      this.stories.unshift(story); // TODO: will need to this with favorites as well  
+      this.stories.unshift(story); 
+      
+      return story;
     }
   }
 }
@@ -130,6 +133,14 @@ class User {
 
     // instantiate Story instances for the user's favorites and ownStories
     this.favorites = favorites.map(s => new Story(s));
+
+  // This is duplicate logic. We can keep track of favorites in the user instance and just manipulate the DOM rather
+  // than keeping track in the Story class.
+  // In the constructor, we get the incoming favorites and just add to the DOM 
+  // for (let story of currentUser.favorites) {
+  //   story.favorite = true;
+  // }    
+
     this.ownStories = ownStories.map(s => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.
@@ -221,4 +232,93 @@ class User {
       return null;
     }
   }
+
+  async addFavorite(story) {
+    // TO DO: go into insomnia and see how favorites API calls work
+
+    /*
+    Generate markup (stories) ... HTML
+    Load the page without logging, no stars
+    As soon as someone logs in, all stars show up (depending on if user has stories in user's favorites arrays)
+    Figure out how to click on favorites and toggle
+    Update user's favorites list depending on click
+      Update in local memory (locally... added to list) and update in API (POST requests)
+    */
+
+    // Scan favorites and star
+
+    // Still need the axios request, just not updating the favorite
+
+    story.favorite = true; // delete this
+
+    // const { loginToken } = currentUser;
+    const { favorite } = story; // delete this
+
+    // TODO: Also try with storyId not deconstructed
+    // outstanding Q: do we need to deconstruct (i) just favorite, (ii) maybe storyId & favorite, or (iii) all properties?
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      data: { token: this.token, story: { favorite } },
+    });
+
+    /* outstanding Q: is it better to call putStoriesOnPage or use array methods (e.g. find) to 
+    find element that matches the storyId of the story favorited? 
+    
+    this.stories.findIndex(el => el[storyId]).... 
+    */
+
+    putStoriesOnPage();
+    // better to use putStoriesOnPage but conditionally decide if we want to add to star.... 
+      // whenever generate a story, if currentUser === undefined, no star....
+      // if not undefined, then add stars
+  }
+
+
+  async removeFavorite(story) {
+    story.favorite = false; // delete this
+
+    // const { loginToken } = currentUser;
+    const { favorite } = story; // delete this
+
+    // TODO: Also try with storyId not deconstructed
+    // outstanding Qs: same as addFav...
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      data: { token: this.token, story: { favorite } },
+    });
+
+    putStoriesOnPage();
+  }
 }
+
+/*
+  async addStory(currentUser, newStory) {
+
+    const { loginToken } = currentUser;
+    const { author, title, url } = newStory;
+
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      data: { token: loginToken, story: { author, title, url } },
+    });
+
+    {
+      const { storyId, title, author, url, username, createdAt } = response.data.story;
+
+      const story = new Story(
+        {
+          storyId,
+          title,
+          author,
+          url,
+          username,
+          createdAt
+        }
+      );
+      this.stories.unshift(story); // TODO: will need to this with favorites as well  
+    }
+  }
+*/
