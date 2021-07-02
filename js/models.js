@@ -25,8 +25,7 @@ class Story {
 
   getHostName() {
     // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
-    // TO DO: change name HERE from hostname
+    return new URL(this.url).hostname;
   }
 }
 

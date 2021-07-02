@@ -8,10 +8,9 @@ async function submitStory(evt) {
   console.debug("submitStory", evt);
   evt.preventDefault();
 
-  // TO DO: change ID vars to submitsform-author
-  const author = $("#author").val();
-  const title = $("#title").val();
-  const url = $("#url").val();
+  const author = $("#submitform-author").val();
+  const title = $("#submitform-title").val();
+  const url = $("#submitform-url").val();
 
   // StoryList.addStory sends Post request to API and returns story instance
   // which we'll make the globally-available newStory.
