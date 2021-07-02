@@ -52,7 +52,6 @@ class StoryList {
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
     //  instance method?
-
     /*  A: Since there is only one version of all the stories and it does not need to 
         replicated, it doesn't make sense to have different instances replicating
         it. It's static. */
@@ -67,7 +66,7 @@ class StoryList {
     const stories = response.data.stories.map(story => new Story(story));
 
     // build an instance of our own class using the new array of stories
-    return new StoryList(stories);
+    return new this(stories); // Comment: this seems to be working
   }
 
 
@@ -77,8 +76,6 @@ class StoryList {
    *
    * Returns the new Story instance
    */
-
-  /** Adds a new story by sending data to our API and creates the Story instance */
   async addStory(currentUser, newStory) {
 
     const { loginToken } = currentUser;
@@ -90,48 +87,38 @@ class StoryList {
       data: { token: loginToken, story: { author, title, url } },
     });
 
-    const { story } = response.data;
+    // const { story } = response.data;
 
-    return new Story(
-      {
-        storyId: story.storyId,
-        title: story.title,
-        author: story.author,
-        url: story.url,
-        username: story.username,
-        createdAt: story.createdAt
-      }
-    );
+    // return new Story(
+    //   {
+    //     storyId: story.storyId,
+    //     title: story.title,
+    //     author: story.author,
+    //     url: story.url,
+    //     username: story.username,
+    //     createdAt: story.createdAt
+    //   }
+    // );
 
-    // outstanding Q: can we deconstruct story with the same var names as those in newStory?
-    /*
-    // We are getting an error, probably because we already have 'const { author, title, url } = newStory', so duplicate variables?
-    const { storyId, title, author, url, username, createdAt } = response.data.story;
-​
-    return new Story(
-      {
-        storyId,
-        title,
-        author,
-        url,
-        username,
-        createdAt
-      }
-    );
-    */
+    {
+      const { storyId, title, author, url, username, createdAt } = response.data.story;
+
+      const story = new Story(
+        {
+          storyId,
+          title,
+          author,
+          url,
+          username,
+          createdAt
+        }
+      );
+      this.stories.unshift(story); // will need to this with favorites as well  
+    }
   }
 }
 
-/*
-Tests passed for 2A: 
-let newStory = storyList.addStory(currentUser,
-  {title: "Test", author: "Me", url: "http://meow.com"});
-​
-console.log((await newStory) instanceof Story); // true [and correct format]
-​
-// Next: when submit form -> get data from form & invoke addStory on story list class -> add to story list
-​
-​
+
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
  */
@@ -176,7 +163,10 @@ class User {
       data: { user: { username, password, name } },
     });
 
-    return new User(
+    /** Defines user variable */
+    let { user } = response.data;
+
+    return new this(
       {
         username: user.username,
         name: user.name,
@@ -203,7 +193,7 @@ class User {
 
     let { user } = response.data;
 
-    return new User(
+    return new this(
       {
         username: user.username,
         name: user.name,
@@ -229,7 +219,7 @@ class User {
 
       let { user } = response.data;
 
-      return new User(
+      return new this(
         {
           username: user.username,
           name: user.name,

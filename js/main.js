@@ -9,8 +9,9 @@ const $allStoriesList = $("#all-stories-list");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
+/** Adds variable for the story submission form */
 const $storySubmitForm = $("#story-submit-form");
-
+/** Adds variable for the story submission navigation bar link */
 const $navStorySubmit = $("#nav-story-submit");
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");

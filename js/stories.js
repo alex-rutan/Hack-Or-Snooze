@@ -2,12 +2,8 @@
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
-let newStory;
 
-
-/** Handle story form submission. */
-
-// OUTSTANDING QUESTIONS: WHY IS THERE A DELAY LAG WHEN SUBMITTING NEW STORY (ONLY LOADS AFTER REFRESH) AND DO WE NEED AWAIT IN FRONT OF putStoriesOnPage() ???
+/** Handle story form submission. If login ok, sets up the user instance  */
 async function submitStory(evt) {
   console.debug("submitStory", evt);
   evt.preventDefault();
@@ -16,14 +12,11 @@ async function submitStory(evt) {
   const title = $("#title").val();
   const url = $("#url").val();
 
-  // const story = { author, title, url }
-
   // StoryList.addStory sends Post request to API and returns story instance
   // which we'll make the globally-available newStory.
-  newStory = await storyList.addStory(currentUser, { author, title, url });
-  // newStory = { author: "Me", title: "TEST5", url: "http://meow.com" }
+  await storyList.addStory(currentUser, { author, title, url });
 
-  await putStoriesOnPage(); // !!!!!!! DO WE NEED AWAIT HERE???
+  putStoriesOnPage();
 
   $storySubmitForm.trigger("reset");
   $storySubmitForm.hide();
