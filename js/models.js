@@ -26,6 +26,7 @@ class Story {
   getHostName() {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
+    // TO DO: change name HERE from hostname
   }
 }
 
@@ -87,19 +88,6 @@ class StoryList {
       data: { token: loginToken, story: { author, title, url } },
     });
 
-    // const { story } = response.data;
-
-    // return new Story(
-    //   {
-    //     storyId: story.storyId,
-    //     title: story.title,
-    //     author: story.author,
-    //     url: story.url,
-    //     username: story.username,
-    //     createdAt: story.createdAt
-    //   }
-    // );
-
     {
       const { storyId, title, author, url, username, createdAt } = response.data.story;
 
@@ -113,7 +101,7 @@ class StoryList {
           createdAt
         }
       );
-      this.stories.unshift(story); // will need to this with favorites as well  
+      this.stories.unshift(story); // TODO: will need to this with favorites as well  
     }
   }
 }

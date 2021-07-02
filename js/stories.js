@@ -8,6 +8,7 @@ async function submitStory(evt) {
   console.debug("submitStory", evt);
   evt.preventDefault();
 
+  // TO DO: change ID vars to submitsform-author
   const author = $("#author").val();
   const title = $("#title").val();
   const url = $("#url").val();
