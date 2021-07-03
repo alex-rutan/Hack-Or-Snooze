@@ -128,3 +128,22 @@ function updateUIOnUserLogin() {
 
   updateNavOnLogin();
 }
+
+// sets click handler for all favorite stars
+$allStoriesList.on("click", "fa-star", function(evt) {
+  let targetStory;
+  let targetStoryId = evt.target.closest("li").attr("id");
+  for (let story of storyList) { // TODO: good spot for filter or find to match ids
+    if (story.storyId === targetStoryId) {
+      targetStory = story;
+    }
+  }
+  if (evt.target.classList.contains(".far")) { // TODO: Toggle icon, use jquery attr.
+    currentUser.addFavorite(targetStory);
+  } else {
+    currentUser.removeFavorite(targetStory);
+  }
+});
+
+
+

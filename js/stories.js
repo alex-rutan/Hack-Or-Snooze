@@ -43,9 +43,39 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
   const hostName = story.getHostName();
-  return $(`
+
+  if (currentUser) {
+    console.log("currentUser");
+    for (let favStory of currentUser.favorites) {
+      if (favStory.storyId === story.storyId) {
+        return $(`
+      <li id="${story.storyId}">
+      <i class="fas fa-star"></i>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+      } else {
+        return $(`
+      <li id="${story.storyId}">
+      <i class="far fa-star"></i>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+      }
+    }
+  } else {
+    return $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -55,6 +85,7 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  }
   // Need some logic in here so that when the user logs in, we know if that story is in the user's favorites array
   // Need to manipulate the DOM to star that story if it's in the array
   // Each time we add a star, want to check if the story is in the user's array

@@ -248,18 +248,18 @@ class User {
     // Scan favorites and star
 
     // Still need the axios request, just not updating the favorite
-
+    
     story.favorite = true; // delete this
 
     // const { loginToken } = currentUser;
-    const { favorite } = story; // delete this
+    const { storyId } = story; // delete this
 
     // TODO: Also try with storyId not deconstructed
     // outstanding Q: do we need to deconstruct (i) just favorite, (ii) maybe storyId & favorite, or (iii) all properties?
     const response = await axios({
-      url: `${BASE_URL}/stories`,
+      url: `${BASE_URL}/users/${currentUser}/favorites/${storyId}`,
       method: "POST",
-      data: { token: this.token, story: { favorite } },
+      data: { "token": this.token, username: currentUser.username, storyId: storyId },
     });
 
     /* outstanding Q: is it better to call putStoriesOnPage or use array methods (e.g. find) to 
@@ -267,6 +267,7 @@ class User {
     
     this.stories.findIndex(el => el[storyId]).... 
     */
+    this.favorites.unshift(story);
 
     putStoriesOnPage();
     // better to use putStoriesOnPage but conditionally decide if we want to add to star.... 
@@ -279,15 +280,17 @@ class User {
     story.favorite = false; // delete this
 
     // const { loginToken } = currentUser;
-    const { favorite } = story; // delete this
+    const { storyId } = story; // delete this
 
     // TODO: Also try with storyId not deconstructed
     // outstanding Qs: same as addFav...
     const response = await axios({
-      url: `${BASE_URL}/stories`,
+      url: `${BASE_URL}/users/${currentUser}/favorites/${storyId}`,
       method: "POST",
-      data: { token: this.token, story: { favorite } },
+      data: { "token": this.token },
     });
+
+    this.favorites.unshift(story); // TODO: use filter to match
 
     putStoriesOnPage();
   }
